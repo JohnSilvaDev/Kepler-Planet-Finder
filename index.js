@@ -2,7 +2,7 @@ const { parse } = require('csv-parse')
 const fs = require('fs')
 const habitablePlanets = []
 
-function isHabitable (planet) { // checks if all the conditions to confirm that a planet is habitable are met
+function isHabitable (planet) { 
   return planet.koi_disposition === 'CONFIRMED' &&
     planet.koi_insol > 0.36 && planet.koi_insol < 1.11 &&
     planet.koi_prad > 1.6
