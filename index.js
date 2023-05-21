@@ -1,10 +1,17 @@
 const { parse } = require('csv-parse')
 const fs = require('fs')
 
+const MINIMUM_FLUX = 0.36
+const MAXIMUM_INSOLATION_FLUX = 1.11
+const MINIMUM_PLANET_RADIUS = 1.6
+
 function isHabitable (planet) {
-  return planet.koi_disposition === 'CONFIRMED' &&
-    planet.koi_insol > 0.36 && planet.koi_insol < 1.11 &&
-    planet.koi_prad > 1.6
+  const planetStatus = planet.koi_disposition
+  const insolationFlux = planet.koi_insol
+  const planetRadius = planet.koi_prad
+  return planetStatus === 'CONFIRMED' &&
+    insolationFlux > MINIMUM_FLUX && insolationFlux < MAXIMUM_INSOLATION_FLUX &&
+    planetRadius > MINIMUM_PLANET_RADIUS
 }
 
 function init () {
@@ -18,15 +25,15 @@ function init () {
   })
   ).on('data', (data) => {
     if (isHabitable(data)) {
-      habitablePlanets.push(data) // filters the data based on the habitability criteria and pushes each chunk into the habitablePlanets array
-      console.log(data.kepler_name) // logs each 'kepler_name' property from the stream, which corresponds to the planet name
+      habitablePlanets.push(data) 
+      console.log(data.kepler_name) 
     }
   }
   ).on('end', () => {
     console.log(`${habitablePlanets.length} habitable planets found!`) // logs the number of planets found once the event ends
   }
   ).on('error', (err) => {
-    console.log(err) // logs any error that may occur
+    throw new Error(err)
   })
 }
 
