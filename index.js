@@ -13,7 +13,8 @@ function init () {
   fs.createReadStream(
     'kepler_data.csv'
   ).pipe(parse({
-    columns: true
+    comment: '#',
+    columns: true,
   })
   ).on('data', (data) => {
     if (isHabitable(data)) {
