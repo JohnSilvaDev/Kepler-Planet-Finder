@@ -2,9 +2,12 @@ const { parse } = require('csv-parse')
 const fs = require('fs')
 
 function isHabitable (planet) {
-  return planet.koi_disposition === 'CONFIRMED' &&
-    planet.koi_insol > 0.36 && planet.koi_insol < 1.11 &&
-    planet.koi_prad > 1.6
+  const planetStatus = planet.koi_disposition
+  const insolationFlux = planet.koi_insol
+  const planetRadius = planet.koi_prad
+  return planetStatus === 'CONFIRMED' &&
+    insolationFlux > 0.36 && insolationFlux < 1.11 &&
+    planetRadius > 1.6
 }
 
 function init () {
