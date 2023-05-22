@@ -21,12 +21,12 @@ function init () {
     'kepler_data.csv'
   ).pipe(parse({
     comment: '#',
-    columns: true,
+    columns: true
   })
   ).on('data', (data) => {
     if (isHabitable(data)) {
-      habitablePlanets.push(data) 
-      console.log(data.kepler_name) 
+      habitablePlanets.push(data)
+      console.log(data.kepler_name)
     }
   }
   ).on('end', () => {
